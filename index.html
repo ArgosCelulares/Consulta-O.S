@@ -8,8 +8,8 @@
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            background-color: #2f2f30; /* Cor de fundo clara */
-            display: flex; 
+            background-color: #f4f4f4;
+            display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -23,7 +23,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        .logo {
+        img.logo {
             max-width: 200px;
             margin-bottom: 20px;
         }
@@ -40,29 +40,42 @@
             width: 80%;
             max-width: 400px;
             padding: 10px;
-            background-color: #fff; /* Verde do site */
+            background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #6f6f72;
+            background-color: #45a049;
         }
-        .status {
+        .status-list {
             margin-top: 20px;
+            list-style: none;
+            padding: 0;
+        }
+        .status-item {
             padding: 10px;
-            background-color: #0500ff;
+            border: 1px solid #ccc;
             border-radius: 4px;
-            border: 1px solid #ddd;
+            margin: 5px auto;
+            background-color: #f9f9f9;
+            color: #333;
             width: 80%;
             max-width: 400px;
-            text-align: left;
+            text-align: center;
         }
         .status-item.active {
-            background-color: #0500ff;
+            background-color: #4CAF50;
             color: white;
             font-weight: bold;
+        }
+        .additional-info {
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: left;
+            width: 80%;
+            max-width: 400px;
         }
     </style>
 </head>
@@ -70,51 +83,61 @@
 
     <div class="container">
         <img src="https://i.ibb.co/0Z4HkZh/logo.png" alt="Logo da Empresa" class="logo">
-        <h2>Consulta de Status do Pedido</h2>
-        <p>Digite o código do seu pedido para consultar o status:</p>
+        <h2>Consulta de Sua Ordem de Seviço</h2>
+        <p>Digite o código de sua O.S para consultar o status:</p>
         <input type="text" id="codigoPedido" placeholder="Código do Pedido">
         <button onclick="consultarStatus()">Consultar Status</button>
 
-        <div id="statusResultado" class="status" style="display:none;">
-            <h4>Status do Pedido:</h4>
-            <ul id="statusItens">
-                <li class="status-item">Aguardando Motoqueiro</li>
-                <li class="status-item">A caminho do laboratório</li>
-                <li class="status-item">No laboratório</li>
-                <li class="status-item">Em execução</li>
-                <li class="status-item">A caminho da loja</li>
-                <li class="status-item">Disponível para retirada na loja</li>
-                <li class="status-item">Retirado Ok</li>
-            </ul>
+        <ul id="statusResultado" class="status-list" style="display:none;">
+            <li class="status-item">Aguardando Motoqueiro</li>
+            <li class="status-item">A caminho do laboratório</li>
+            <li class="status-item">No laboratório</li>
+            <li class="status-item">Em execução</li>
+            <li class="status-item">A caminho da loja</li>
+            <li class="status-item">Disponível para retirada na loja</li>
+            <li class="status-item">Retirado Ok</li>
+        </ul>
+
+        <div id="additionalInfo" class="additional-info" style="display:none;">
+            <p><strong>Data de Atualização:</strong> <span id="dataAtualizacao"></span></p>
+            <p><strong>Observações:</strong> <span id="observacoes"></span></p>
         </div>
     </div>
 
     <script>
         function consultarStatus() {
-            var codigo = document.getElementById('codigoPedido').value;
-            if (codigo.trim() === '') {
+            const codigo = document.getElementById('codigoPedido').value.trim();
+            if (codigo === '') {
                 alert('Por favor, insira um código de pedido válido.');
                 return;
             }
 
-            var url = `https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE`;
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE`;
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     let pedidoEncontrado = false;
+                    let statusAtual = '';
+                    let dataAtualizacao = '';
+                    let observacoes = '';
+
                     for (let i = 0; i < data.values.length; i++) {
                         if (data.values[i][0] === codigo) {
                             pedidoEncontrado = true;
-                            var statusAtual = data.values[i][1];
+                            statusAtual = data.values[i][1]; // O status do pedido na planilha
+                            dataAtualizacao = data.values[i][2]; // Data de atualização
+                            observacoes = data.values[i][3]; // Observações
                             break;
                         }
                     }
+
                     if (!pedidoEncontrado) {
                         alert('Pedido não encontrado.');
                         return;
                     }
 
+                    // Atualiza a exibição dos status
                     const statusItens = document.querySelectorAll('.status-item');
                     statusItens.forEach(item => {
                         item.classList.remove('active');
@@ -123,7 +146,11 @@
                         }
                     });
 
+                    // Exibe as informações adicionais
+                    document.getElementById('dataAtualizacao').textContent = dataAtualizacao;
+                    document.getElementById('observacoes').textContent = observacoes;
                     document.getElementById('statusResultado').style.display = 'block';
+                    document.getElementById('additionalInfo').style.display = 'block';
                 })
                 .catch(error => {
                     alert('Erro ao consultar status do pedido.');
