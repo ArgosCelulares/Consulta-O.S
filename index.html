@@ -9,10 +9,14 @@
             font-family: Arial, sans-serif;
             padding: 20px;
             background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         .container {
             max-width: 750px;
-            margin: 0 auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -24,14 +28,17 @@
             margin-bottom: 20px;
         }
         input[type="text"] {
-            width: 100%;
+            width: 80%;
+            max-width: 400px;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
+            text-align: center;
         }
         button {
-            width: 100%;
+            width: 80%;
+            max-width: 400px;
             padding: 10px;
             background-color: #4CAF50;
             color: white;
@@ -51,9 +58,12 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            margin: 5px 0;
+            margin: 5px auto;
             background-color: #f9f9f9;
             color: #333;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
         }
         .status-item.active {
             background-color: #4CAF50;
@@ -72,6 +82,7 @@
         <button onclick="consultarStatus()">Consultar Status</button>
 
         <ul id="statusResultado" class="status-list" style="display:none;">
+            <li class="status-item">Aguardando Motoqueiro</li>
             <li class="status-item">A caminho do laboratório</li>
             <li class="status-item">No laboratório</li>
             <li class="status-item">Em execução</li>
@@ -83,14 +94,13 @@
 
     <script>
         function consultarStatus() {
-            var codigo = document.getElementById('codigoPedido').value;
-            if (codigo.trim() === '') {
+            const codigo = document.getElementById('codigoPedido').value.trim();
+            if (codigo === '') {
                 alert('Por favor, insira um código de pedido válido.');
                 return;
             }
 
-            // URL da planilha
-            var url = `https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE`;
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE`;
 
             fetch(url)
                 .then(response => response.json())
@@ -100,21 +110,22 @@
                     for (let i = 0; i < data.values.length; i++) {
                         if (data.values[i][0] === codigo) {
                             pedidoEncontrado = true;
-                            statusAtual = data.values[i][1]; // O status atual do pedido está na coluna 2
+                            statusAtual = data.values[i][1]; // O status do pedido na planilha
                             break;
                         }
                     }
+
                     if (!pedidoEncontrado) {
                         alert('Pedido não encontrado.');
                         return;
                     }
 
-                    // Atualizar a exibição dos status
+                    // Atualiza a exibição dos status
                     const statusItens = document.querySelectorAll('.status-item');
                     statusItens.forEach(item => {
-                        item.classList.remove('active'); // Remove qualquer estilo ativo
+                        item.classList.remove('active'); // Remove destaque de todos os itens
                         if (item.textContent.trim() === statusAtual.trim()) {
-                            item.classList.add('active'); // Adiciona a classe ativa ao status correspondente
+                            item.classList.add('active'); // Destaca o status correspondente
                         }
                     });
 
