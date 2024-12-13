@@ -7,17 +7,18 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 0;
             margin: 0;
+            padding: 0;
             background-color: #f4f4f4; /* Cor de fundo clara */
             display: flex; 
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 100vh; /* Garante que o conteúdo seja centralizado verticalmente */
+            flex-direction: column; /* Organiza os itens verticalmente */
         }
         .container {
-            max-width: 500px;
             width: 100%;
+            max-width: 500px;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -59,6 +60,7 @@
             width: 80%;
             max-width: 400px;
             text-align: left;
+            margin-top: 20px;
         }
         .status-item.active {
             background-color: #4CAF50;
