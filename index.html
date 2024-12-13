@@ -7,41 +7,43 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            display: flex; /* Centraliza o contêiner verticalmente */
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: center; /* Centraliza verticalmente */
+            height: 100vh; /* Altura total da tela */
             margin: 0;
-            background-color: #f4f4f4; /* Cor de fundo clara */
-            display: flex; 
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
         .container {
-            max-width: 500px;
-            width: 100%;
+            max-width: 750px;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            display: flex; /* Organiza os elementos */
+            flex-direction: column; /* Alinha os itens verticalmente */
+            align-items: center; /* Centraliza os itens no meio */
         }
-        .logo {
+        img.logo {
             max-width: 200px;
             margin-bottom: 20px;
         }
         input[type="text"] {
-            width: 80%;
-            max-width: 400px;
+            width: 80%; /* Ajusta a largura para 80% do contêiner */
+            max-width: 400px; /* Limita a largura máxima */
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
-            text-align: center;
+            text-align: center; /* Centraliza o texto no campo */
         }
         button {
-            width: 80%;
-            max-width: 400px;
+            width: 80%; /* Igual ao campo de entrada */
+            max-width: 400px; /* Limita a largura máxima */
             padding: 10px;
-            background-color: #4CAF50; /* Verde do site */
+            background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 4px;
@@ -57,13 +59,8 @@
             border-radius: 4px;
             border: 1px solid #ddd;
             width: 80%;
-            max-width: 400px;
-            text-align: left;
-        }
-        .status-item.active {
-            background-color: #4CAF50;
-            color: white;
-            font-weight: bold;
+            max-width: 400px; /* Consistente com os outros elementos */
+            text-align: left; /* Para textos de status */
         }
     </style>
 </head>
@@ -71,14 +68,14 @@
 
     <div class="container">
         <img src="https://i.ibb.co/0Z4HkZh/logo.png" alt="Logo da Empresa" class="logo">
-        <h2>Consulta de status da sua Ordem de Serviço</h2>
-        <p>Digite o código da sua O.S para consultar o status:</p>
+        <h2>Consulta de Status do Pedido</h2>
+        <p>Digite o código do seu pedido para consultar o status:</p>
         <input type="text" id="codigoPedido" placeholder="Código do Pedido">
         <button onclick="consultarStatus()">Consultar Status</button>
 
         <div id="statusResultado" class="status" style="display:none;">
-            <h4>Status Atual do Pedido:</h4>
-            <p id="statusPedido">Aguardando consulta...</p>
+            <h4>Status do Pedido:</h4>
+            <p id="statusPedido"></p>
         </div>
     </div>
 
@@ -90,29 +87,23 @@
                 return;
             }
 
+            // Aqui vamos buscar os dados do Google Sheets usando uma API ou link público da planilha
             var url = `https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE`;
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     let pedidoEncontrado = false;
-                    var statusAtual = '';
                     for (let i = 0; i < data.values.length; i++) {
                         if (data.values[i][0] === codigo) {
                             pedidoEncontrado = true;
-                            statusAtual = data.values[i][1]; // Obtém o status do pedido
+                            document.getElementById('statusPedido').innerHTML = `Status: ${data.values[i][1]}<br>Última atualização: ${data.values[i][2]}<br>Observações: ${data.values[i][3]}`;
                             break;
                         }
                     }
                     if (!pedidoEncontrado) {
-                        alert('Pedido não encontrado.');
                         document.getElementById('statusPedido').innerHTML = 'Pedido não encontrado.';
-                        return;
                     }
-
-                    // Exibe o status atual
-                    document.getElementById('statusPedido').innerHTML = statusAtual;
-
                     document.getElementById('statusResultado').style.display = 'block';
                 })
                 .catch(error => {
