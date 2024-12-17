@@ -73,16 +73,16 @@
         .status p {
             margin: 5px 0;
         }
-        /* Estilo para os ícones de Instagram e WhatsApp */
+        /* Estilo para os ícones */
         .social-icons {
             margin-top: 20px;
             display: flex;
             justify-content: center;
+            gap: 15px;
         }
         .social-icons img {
             width: 40px;
             height: 40px;
-            margin: 0 10px;
         }
         footer {
             width: 100%;
@@ -117,13 +117,13 @@
             <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
         </div>
 
-        <!-- Ícones das redes sociais -->
+        <!-- Ícones de redes sociais -->
         <div class="social-icons">
             <a href="https://www.instagram.com/argoscelulares/" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
             </a>
-            <a id="whatsappLink" href="#" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            <a href="javascript:void(0);" id="whatsappLink">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/WhatsApp.svg" alt="WhatsApp">
             </a>
         </div>
     </div>
@@ -140,7 +140,7 @@
                 return;
             }
 
-            var url = 'https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE';
+            var url = "https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE";
 
             fetch(url)
                 .then(response => response.json())
@@ -149,16 +149,14 @@
                     var statusAtual = '';
                     var dataAtualizacao = '';
                     var observacoes = '';
-                    var whatsappNumero = '';
-
+                    var numeroWhatsapp = '';
                     for (let i = 0; i < data.values.length; i++) {
                         if (data.values[i][0] === codigo) {
                             pedidoEncontrado = true;
                             statusAtual = data.values[i][1]; // Obtém o status do pedido
                             dataAtualizacao = data.values[i][2]; // Obtém a data de atualização
                             observacoes = data.values[i][3]; // Obtém as observações
-                            var nomeLoja = data.values[i][4]; // Nome da loja
-                            whatsappNumero = nomeLoja ? data.values[i][5] : data.values[i][6]; // Se não tiver nome da loja, pega o número de delivery
+                            numeroWhatsapp = data.values[i][4] || "11940301182"; // Número do WhatsApp ou o número de delivery
                             break;
                         }
                     }
@@ -175,8 +173,9 @@
                     document.getElementById('dataAtualizacao').innerHTML = dataAtualizacao;
                     document.getElementById('observacoes').innerHTML = observacoes;
 
-                    // Configura o link do WhatsApp
-                    document.getElementById('whatsappLink').href = 'https://wa.me/' + whatsappNumero;
+                    // Atualiza o link do WhatsApp com o número do cliente ou de delivery
+                    var whatsappLink = document.getElementById('whatsappLink');
+                    whatsappLink.setAttribute('href', `https://wa.me/${numeroWhatsapp}`);
 
                     document.getElementById('statusResultado').style.display = 'block';
                 })
