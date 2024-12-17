@@ -54,14 +54,19 @@
             background-color: #45a049;
         }
         .status {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    width: 80%;
+    max-width: 400px;
+    text-align: left; /* Texto alinhado à esquerda */
+    margin: 20px auto; /* Centraliza o retângulo horizontalmente */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Elementos internos alinhados à esquerda */
+    justify-content: center; /* Mantém centralização vertical interna */
         }
         .social-icons {
             margin-top: 20px;
@@ -70,17 +75,20 @@
             align-items: center;
             gap: 15px;
         }
-        .social-icons a {
+        .social-icons a, .social-icons button {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
         .social-icons a img, .social-icons button img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            width: 100%;
+            height: 100%;
         }
         footer {
             width: 100%;
@@ -119,9 +127,9 @@
         <a href="https://www.instagram.com/argoscelulares/" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
         </a>
-        <button id="whatsappButton" style="display:none;" onclick="redirecionarWhatsApp()">
+        <a href="https://wa.me/+5511999999999" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-        </button>
+        </a>
     </div>
 </div>
 
@@ -130,9 +138,6 @@
 </footer>
 
 <script>
-    let lojaAtendente = null;
-    let deliveryNumber = '+5511940301182'; // Número padrão do delivery
-
     function consultarStatus() {
         var codigo = document.getElementById('codigoPedido').value;
         if (codigo.trim() === '') {
@@ -152,7 +157,6 @@
                         document.getElementById('statusPedido').innerText = data.values[i][1];
                         document.getElementById('dataAtualizacao').innerText = data.values[i][2];
                         document.getElementById('observacoes').innerText = data.values[i][3];
-                        lojaAtendente = data.values[i][4]; // Supondo que o nome da loja está na 5ª coluna
                         break;
                     }
                 }
@@ -160,25 +164,15 @@
                 if (!pedidoEncontrado) {
                     alert('Pedido não encontrado.');
                     document.getElementById('statusResultado').style.display = 'none';
-                    lojaAtendente = null;
                     return;
                 }
 
                 document.getElementById('statusResultado').style.display = 'block';
-                document.getElementById('whatsappButton').style.display = 'flex';
             })
             .catch(error => {
                 alert('Erro ao consultar status do pedido.');
                 console.error(error);
             });
-    }
-
-    function redirecionarWhatsApp() {
-        let numero = lojaAtendente ? `+55${lojaAtendente}` : deliveryNumber;
-        let mensagem = lojaAtendente
-            ? `Olá, sou cliente da loja ${lojaAtendente}. Poderia me ajudar com meu pedido?`
-            : `Olá, estou com dúvidas sobre meu pedido.`;
-        window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, '_blank');
     }
 </script>
 
