@@ -141,8 +141,7 @@
     // Se o código estiver em branco, redireciona para o WhatsApp do delivery
     if (codigo.trim() === '') {
         alert('Por favor, insira um código de pedido válido ou entre em contato com o delivery.');
-        document.getElementById('whatsappLink').href = "https://wa.me/5511940301182"; // Número do delivery configurado
-        document.getElementById('whatsappLink').click(); // Simula o clique no link do WhatsApp
+        window.open("https://wa.me/5511940301182", "_blank"); // Abre o WhatsApp em uma nova guia
         return;
     }
 
@@ -173,7 +172,7 @@
                 document.getElementById('statusPedido').innerHTML = 'Pedido não encontrado.';
                 document.getElementById('dataAtualizacao').innerHTML = 'Data não disponível.';
                 document.getElementById('observacoes').innerHTML = 'Nenhuma observação.';
-                document.getElementById('whatsappLink').href = "https://wa.me/5511940301182"; // Número do delivery configurado
+                window.open("https://wa.me/5511940301182", "_blank"); // Abre o WhatsApp em uma nova guia
                 return;
             }
 
