@@ -73,20 +73,14 @@
         .status p {
             margin: 5px 0;
         }
-        /* Estilo para o ícone do Instagram */
-        .instagram-icon {
+        /* Estilo para os ícones */
+        .social-icons {
             margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Espaçamento entre os ícones */
         }
-        .instagram-icon img {
-            width: 40px;
-            height: 40px;
-        }
-        /* Estilo para o ícone do WhatsApp */
-        .whatsapp-icon {
-            margin-top: 20px;
-            display: none; /* Inicialmente o ícone do WhatsApp está escondido */
-        }
-        .whatsapp-icon img {
+        .social-icons img {
             width: 40px;
             height: 40px;
             cursor: pointer;
@@ -124,15 +118,11 @@
             <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
         </div>
 
-        <!-- Ícone do Instagram sempre visível -->
-        <div class="instagram-icon">
+        <!-- Ícones do Instagram e WhatsApp -->
+        <div class="social-icons">
             <a href="https://www.instagram.com/argoscelulares/" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
             </a>
-        </div>
-
-        <!-- Ícone do WhatsApp que aparece após a consulta -->
-        <div class="whatsapp-icon" id="whatsappIcon">
             <a id="whatsappLink" href="#" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/WhatsApp.svg" alt="WhatsApp">
             </a>
@@ -181,19 +171,13 @@
                         return;
                     }
 
-                    // Remover qualquer caractere não numérico do número de WhatsApp
-                    numeroWhatsApp = numeroWhatsApp.replace(/\D/g, '');
-
-                    // Atualiza o link do WhatsApp com o número correto
+                    // Atualiza o link do WhatsApp
                     document.getElementById('whatsappLink').href = `https://wa.me/${numeroWhatsApp}`;
 
                     // Exibe as informações do status, data e observações
                     document.getElementById('statusPedido').innerHTML = statusAtual;
                     document.getElementById('dataAtualizacao').innerHTML = dataAtualizacao;
                     document.getElementById('observacoes').innerHTML = observacoes;
-
-                    // Exibe o ícone do WhatsApp após a consulta
-                    document.getElementById('whatsappIcon').style.display = 'block';
 
                     document.getElementById('statusResultado').style.display = 'block';
                 })
