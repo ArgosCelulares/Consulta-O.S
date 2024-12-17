@@ -79,6 +79,7 @@
             display: flex;
             justify-content: center;
             gap: 20px; /* Espaçamento entre os ícones */
+            display: none; /* Ícones escondidos inicialmente */
         }
         .social-icons img {
             width: 40px;
@@ -119,7 +120,7 @@
         </div>
 
         <!-- Ícones do Instagram e WhatsApp -->
-        <div class="social-icons">
+        <div class="social-icons" id="socialIcons">
             <a href="https://www.instagram.com/argoscelulares/" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
             </a>
@@ -171,6 +172,9 @@
                         return;
                     }
 
+                    // Remover qualquer caractere não numérico do número de WhatsApp
+                    numeroWhatsApp = numeroWhatsApp.replace(/\D/g, '');
+
                     // Atualiza o link do WhatsApp com o número correto
                     document.getElementById('whatsappLink').href = `https://wa.me/${numeroWhatsApp}`;
 
@@ -178,6 +182,9 @@
                     document.getElementById('statusPedido').innerHTML = statusAtual;
                     document.getElementById('dataAtualizacao').innerHTML = dataAtualizacao;
                     document.getElementById('observacoes').innerHTML = observacoes;
+
+                    // Exibe os ícones (WhatsApp e Instagram)
+                    document.getElementById('socialIcons').style.display = 'flex';
 
                     document.getElementById('statusResultado').style.display = 'block';
                 })
