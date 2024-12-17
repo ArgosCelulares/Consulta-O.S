@@ -73,16 +73,14 @@
         .status p {
             margin: 5px 0;
         }
-        /* Estilo para os ícones do Instagram e WhatsApp */
-        .icons {
+        /* Estilo para os ícones */
+        .social-icons {
             margin-top: 20px;
             display: flex;
             justify-content: center;
+            gap: 15px;
         }
-        .icons a {
-            margin: 0 10px;
-        }
-        .icons img {
+        .social-icons img {
             width: 40px;
             height: 40px;
         }
@@ -119,12 +117,12 @@
             <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
         </div>
 
-        <!-- Ícones do Instagram e WhatsApp -->
-        <div class="icons">
+        <!-- Ícones de redes sociais -->
+        <div class="social-icons">
             <a href="https://www.instagram.com/argoscelulares/" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
             </a>
-            <a href="#" id="whatsappLink" target="_blank">
+            <a id="whatsappLink" href="#" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
             </a>
         </div>
@@ -135,64 +133,56 @@
     </footer>
 
     <script>
-      function consultarStatus() {
-    var codigo = document.getElementById('codigoPedido').value;
-    
-    // Se o código estiver em branco, redireciona para o WhatsApp do delivery
-    if (codigo.trim() === '') {
-        alert('Por favor, insira um código de pedido válido ou entre em contato com o delivery.');
-        window.open("https://wa.me/5511940301182", "_blank"); // Abre o WhatsApp em uma nova guia
-        return;
-    }
-
-    var url = "https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE";
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            let pedidoEncontrado = false;
-            var statusAtual = '';
-            var dataAtualizacao = '';
-            var observacoes = '';
-            var whatsappNumber = '';
-
-            for (let i = 0; i < data.values.length; i++) {
-                if (data.values[i][0] === codigo) {
-                    pedidoEncontrado = true;
-                    statusAtual = data.values[i][1]; // Obtém o status do pedido
-                    dataAtualizacao = data.values[i][2]; // Obtém a data de atualização
-                    observacoes = data.values[i][3]; // Obtém as observações
-                    whatsappNumber = data.values[i][4]; // Obtém o número de WhatsApp
-                    break;
-                }
-            }
-
-            if (!pedidoEncontrado) {
-                alert('Pedido não encontrado.');
-                document.getElementById('statusPedido').innerHTML = 'Pedido não encontrado.';
-                document.getElementById('dataAtualizacao').innerHTML = 'Data não disponível.';
-                document.getElementById('observacoes').innerHTML = 'Nenhuma observação.';
-                window.open("https://wa.me/5511940301182", "_blank"); // Abre o WhatsApp em uma nova guia
+        function consultarStatus() {
+            var codigo = document.getElementById('codigoPedido').value;
+            if (codigo.trim() === '') {
+                alert('Por favor, insira um código de pedido válido.');
                 return;
             }
 
-            // Exibe as informações do status, data e observações
-            document.getElementById('statusPedido').innerHTML = statusAtual;
-            document.getElementById('dataAtualizacao').innerHTML = dataAtualizacao;
-            document.getElementById('observacoes').innerHTML = observacoes;
+            var url = `https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE`;
 
-            document.getElementById('statusResultado').style.display = 'block';
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    let pedidoEncontrado = false;
+                    var statusAtual = '';
+                    var dataAtualizacao = '';
+                    var observacoes = '';
+                    var whatsappNumber = '11940301182'; // Número de delivery default
+                    for (let i = 0; i < data.values.length; i++) {
+                        if (data.values[i][0] === codigo) {
+                            pedidoEncontrado = true;
+                            statusAtual = data.values[i][1]; // Obtém o status do pedido
+                            dataAtualizacao = data.values[i][2]; // Obtém a data de atualização
+                            observacoes = data.values[i][3]; // Obtém as observações
+                            whatsappNumber = data.values[i][4] || whatsappNumber; // Se o número de WhatsApp não existir, usa o número de delivery
+                            break;
+                        }
+                    }
+                    if (!pedidoEncontrado) {
+                        alert('Pedido não encontrado.');
+                        document.getElementById('statusPedido').innerHTML = 'Pedido não encontrado.';
+                        document.getElementById('dataAtualizacao').innerHTML = 'Data não disponível.';
+                        document.getElementById('observacoes').innerHTML = 'Nenhuma observação.';
+                        return;
+                    }
 
-            // Atualiza o link do WhatsApp com o número do atendente
-            if (whatsappNumber) {
-                document.getElementById('whatsappLink').href = "https://wa.me/55" + whatsappNumber; // Garante que o link é corretamente formatado
-            }
-        })
-        .catch(error => {
-            alert('Erro ao consultar status do pedido.');
-            console.error(error);
-        });
-}
+                    // Exibe as informações do status, data e observações
+                    document.getElementById('statusPedido').innerHTML = statusAtual;
+                    document.getElementById('dataAtualizacao').innerHTML = dataAtualizacao;
+                    document.getElementById('observacoes').innerHTML = observacoes;
+
+                    document.getElementById('statusResultado').style.display = 'block';
+
+                    // Atualiza o link do WhatsApp
+                    document.getElementById('whatsappLink').href = `https://wa.me/${whatsappNumber}`;
+                })
+                .catch(error => {
+                    alert('Erro ao consultar status do pedido.');
+                    console.error(error);
+                });
+        }
     </script>
 
 </body>
