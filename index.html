@@ -73,15 +73,20 @@
         .status p {
             margin: 5px 0;
         }
-        /* Estilo para os ícones */
-        .social-icons {
+        /* Estilo para o ícone do Instagram */
+        .instagram-icon {
             margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 20px; /* Espaçamento entre os ícones */
-            display: none; /* Ícones escondidos inicialmente */
         }
-        .social-icons img {
+        .instagram-icon img {
+            width: 40px;
+            height: 40px;
+        }
+        /* Estilo para o ícone do WhatsApp */
+        .whatsapp-icon {
+            margin-top: 20px;
+            display: none; /* Esconde o WhatsApp inicialmente */
+        }
+        .whatsapp-icon img {
             width: 40px;
             height: 40px;
             cursor: pointer;
@@ -119,11 +124,15 @@
             <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
         </div>
 
-        <!-- Ícones do Instagram e WhatsApp -->
-        <div class="social-icons" id="socialIcons">
+        <!-- Ícone do Instagram sempre visível -->
+        <div class="instagram-icon">
             <a href="https://www.instagram.com/argoscelulares/" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
             </a>
+        </div>
+
+        <!-- Ícone do WhatsApp que aparece após consulta -->
+        <div class="whatsapp-icon" id="whatsappIcon">
             <a id="whatsappLink" href="https://wa.me/11940301182" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/WhatsApp.svg" alt="WhatsApp">
             </a>
@@ -159,7 +168,7 @@
                             statusAtual = data.values[i][1]; // Obtém o status do pedido
                             dataAtualizacao = data.values[i][2]; // Obtém a data de atualização
                             observacoes = data.values[i][3]; // Obtém as observações
-                            numeroWhatsApp = data.values[i][6]; // Obtém o número de WhatsApp (supondo que esteja na 5ª coluna)
+                            numeroWhatsApp = data.values[i][4]; // Obtém o número de WhatsApp (supondo que esteja na 5ª coluna)
                             break;
                         }
                     }
@@ -183,8 +192,8 @@
                     document.getElementById('dataAtualizacao').innerHTML = dataAtualizacao;
                     document.getElementById('observacoes').innerHTML = observacoes;
 
-                    // Exibe os ícones (WhatsApp e Instagram)
-                    document.getElementById('socialIcons').style.display = 'flex';
+                    // Exibe o ícone do WhatsApp após a consulta
+                    document.getElementById('whatsappIcon').style.display = 'block';
 
                     document.getElementById('statusResultado').style.display = 'block';
                 })
