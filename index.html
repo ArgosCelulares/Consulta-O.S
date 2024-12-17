@@ -10,12 +10,12 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo clara */
+            background-color: #f4f4f4;
             display: flex; 
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Garante que o conteúdo seja centralizado verticalmente */
-            flex-direction: column; /* Organiza os itens verticalmente */
+            height: 100vh;
+            flex-direction: column;
         }
         .container {
             width: 100%;
@@ -43,7 +43,7 @@
             width: 80%;
             max-width: 400px;
             padding: 10px;
-            background-color: #4CAF50; /* Verde do site */
+            background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 4px;
@@ -51,6 +51,13 @@
         }
         button:hover {
             background-color: #45a049;
+        }
+        .whatsapp-button {
+            margin-top: 10px;
+            background-color: #25D366;
+        }
+        .whatsapp-button:hover {
+            background-color: #1DA851;
         }
         .status {
             margin-top: 20px;
@@ -60,26 +67,15 @@
             border: 1px solid #ddd;
             width: 80%;
             max-width: 400px;
-            text-align: left; /* Alinha o texto no centro */
-            margin: 20px auto; /* Centraliza horizontalmente no container */
+            text-align: left;
+            margin: 20px auto;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centraliza o conteúdo */
-            justify-content: center; /* Centraliza o conteúdo verticalmente */
+            align-items: center;
+            justify-content: center;
         }
         .status h4 {
             margin-bottom: 10px;
-        }
-        .status p {
-            margin: 5px 0;
-        }
-        /* Estilo para o ícone do Instagram */
-        .instagram-icon {
-            margin-top: 20px;
-        }
-        .instagram-icon img {
-            width: 40px;
-            height: 40px;
         }
         footer {
             width: 100%;
@@ -101,78 +97,72 @@
 </head>
 <body>
 
-    <div class="container">
-        <img src="https://i.ibb.co/0Z4HkZh/logo.png" alt="Logo da Empresa" class="logo">
-        <h2>Consulta de status da sua Ordem de Serviço</h2>
-        <p>Digite o código da sua O.S para consultar o status:</p>
-        <input type="text" id="codigoPedido" placeholder="Código do Pedido">
-        <button onclick="consultarStatus()">Consultar Status</button>
+<div class="container">
+    <img src="https://i.ibb.co/0Z4HkZh/logo.png" alt="Logo da Empresa" class="logo">
+    <h2>Consulta de status da sua Ordem de Serviço</h2>
+    <p>Digite o código da sua O.S para consultar o status:</p>
+    <input type="text" id="codigoPedido" placeholder="Código do Pedido">
+    <button onclick="consultarStatus()">Consultar Status</button>
+    <button class="whatsapp-button" id="whatsappButton" style="display: none;" onclick="redirecionarWhatsApp()">Encaminhar ao WhatsApp</button>
 
-        <div id="statusResultado" class="status" style="display:none;">
-            <h4>Status Atual do Pedido: <span id="statusPedido">Aguardando consulta...</span></h4>
-            <p><strong>Data de Atualização:</strong> <span id="dataAtualizacao">Aguardando...</span></p>
-            <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
-        </div>
-
-        <!-- Ícone do Instagram com link -->
-        <div class="instagram-icon">
-            <a href="https://www.instagram.com/argoscelulares/" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
-            </a>
-        </div>
+    <div id="statusResultado" class="status" style="display:none;">
+        <h4>Status Atual do Pedido: <span id="statusPedido">Aguardando consulta...</span></h4>
+        <p><strong>Data de Atualização:</strong> <span id="dataAtualizacao">Aguardando...</span></p>
+        <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
     </div>
+</div>
 
-    <footer>
-        Argos Celulares - 2024 | Todos os Direitos Reservados | Desenvolvido com ❤ por <a href="https://www.instagram.com/argoscelulares/" target="_blank">Argos Celulares</a>
-    </footer>
+<footer>
+    Argos Celulares - 2024 | Todos os Direitos Reservados | Desenvolvido com ❤ por <a href="https://www.instagram.com/argoscelulares/" target="_blank">Argos Celulares</a>
+</footer>
 
-    <script>
-        function consultarStatus() {
-            var codigo = document.getElementById('codigoPedido').value;
-            if (codigo.trim() === '') {
-                alert('Por favor, insira um código de pedido válido.');
-                return;
-            }
+<script>
+    let numeroWhatsApp = ''; // Número do WhatsApp a ser usado
 
-            var url = `https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    let pedidoEncontrado = false;
-                    var statusAtual = '';
-                    var dataAtualizacao = '';
-                    var observacoes = '';
-                    for (let i = 0; i < data.values.length; i++) {
-                        if (data.values[i][0] === codigo) {
-                            pedidoEncontrado = true;
-                            statusAtual = data.values[i][1]; // Obtém o status do pedido
-                            dataAtualizacao = data.values[i][2]; // Obtém a data de atualização
-                            observacoes = data.values[i][3]; // Obtém as observações
-                            break;
-                        }
-                    }
-                    if (!pedidoEncontrado) {
-                        alert('Pedido não encontrado.');
-                        document.getElementById('statusPedido').innerHTML = 'Pedido não encontrado.';
-                        document.getElementById('dataAtualizacao').innerHTML = 'Data não disponível.';
-                        document.getElementById('observacoes').innerHTML = 'Nenhuma observação.';
-                        return;
-                    }
-
-                    // Exibe as informações do status, data e observações
-                    document.getElementById('statusPedido').innerHTML = statusAtual;
-                    document.getElementById('dataAtualizacao').innerHTML = dataAtualizacao;
-                    document.getElementById('observacoes').innerHTML = observacoes;
-
-                    document.getElementById('statusResultado').style.display = 'block';
-                })
-                .catch(error => {
-                    alert('Erro ao consultar status do pedido.');
-                    console.error(error);
-                });
+    function consultarStatus() {
+        var codigo = document.getElementById('codigoPedido').value.trim();
+        if (codigo === '') {
+            alert('Por favor, insira um código de pedido válido.');
+            return;
         }
-    </script>
+
+        var url = `https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                let pedidoEncontrado = false;
+                numeroWhatsApp = '5511940301182'; // Número padrão de delivery
+                for (let i = 0; i < data.values.length; i++) {
+                    if (data.values[i][0] === codigo) {
+                        pedidoEncontrado = true;
+                        document.getElementById('statusPedido').innerHTML = data.values[i][1];
+                        document.getElementById('dataAtualizacao').innerHTML = data.values[i][2];
+                        document.getElementById('observacoes').innerHTML = data.values[i][3];
+                        numeroWhatsApp = data.values[i][4] || numeroWhatsApp; // Obtém o número da loja ou mantém o padrão
+                        break;
+                    }
+                }
+
+                if (!pedidoEncontrado) {
+                    alert('Pedido não encontrado. Você será redirecionado ao número de delivery.');
+                }
+
+                document.getElementById('statusResultado').style.display = 'block';
+                document.getElementById('whatsappButton').style.display = 'block';
+            })
+            .catch(error => {
+                alert('Erro ao consultar status do pedido.');
+                console.error(error);
+            });
+    }
+
+    function redirecionarWhatsApp() {
+        var mensagem = `Olá, gostaria de informações sobre minha O.S. Código: ${document.getElementById('codigoPedido').value}`;
+        var urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+        window.open(urlWhatsApp, '_blank');
+    }
+</script>
 
 </body>
 </html>
