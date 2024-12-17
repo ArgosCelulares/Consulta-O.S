@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de O.S</title>
-    <link rel="icon" type="image/png" href="https://i.ibb.co/Vw7mcgF/S-mbolo-Branco.png"> <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/Vw7mcgF/S-mbolo-Branco.png">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
-            display: flex; 
+            display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -48,16 +48,10 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            margin-top: 10px;
         }
         button:hover {
             background-color: #45a049;
-        }
-        .whatsapp-button {
-            margin-top: 10px;
-            background-color: #25D366;
-        }
-        .whatsapp-button:hover {
-            background-color: #1DA851;
         }
         .status {
             margin-top: 20px;
@@ -67,15 +61,26 @@
             border: 1px solid #ddd;
             width: 80%;
             max-width: 400px;
-            text-align: left;
-            margin: 20px auto;
+            text-align: center;
+        }
+        .social-icons {
+            margin-top: 20px;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        .social-icons a {
+            display: flex;
             align-items: center;
             justify-content: center;
+            width: 40px;
+            height: 40px;
         }
-        .status h4 {
-            margin-bottom: 10px;
+        .social-icons a img, .social-icons button img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
         }
         footer {
             width: 100%;
@@ -103,12 +108,20 @@
     <p>Digite o código da sua O.S para consultar o status:</p>
     <input type="text" id="codigoPedido" placeholder="Código do Pedido">
     <button onclick="consultarStatus()">Consultar Status</button>
-    <button class="whatsapp-button" id="whatsappButton" style="display: none;" onclick="redirecionarWhatsApp()">Encaminhar ao WhatsApp</button>
 
     <div id="statusResultado" class="status" style="display:none;">
         <h4>Status Atual do Pedido: <span id="statusPedido">Aguardando consulta...</span></h4>
         <p><strong>Data de Atualização:</strong> <span id="dataAtualizacao">Aguardando...</span></p>
         <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
+    </div>
+
+    <div class="social-icons">
+        <a href="https://www.instagram.com/argoscelulares/" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+        </a>
+        <button id="whatsappButton" style="display:none;" onclick="redirecionarWhatsApp()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        </button>
     </div>
 </div>
 
@@ -117,11 +130,12 @@
 </footer>
 
 <script>
-    let numeroWhatsApp = ''; // Número do WhatsApp a ser usado
+    let lojaAtendente = null;
+    let deliveryNumber = '+5511940301182'; // Número padrão do delivery
 
     function consultarStatus() {
-        var codigo = document.getElementById('codigoPedido').value.trim();
-        if (codigo === '') {
+        var codigo = document.getElementById('codigoPedido').value;
+        if (codigo.trim() === '') {
             alert('Por favor, insira um código de pedido válido.');
             return;
         }
@@ -132,24 +146,26 @@
             .then(response => response.json())
             .then(data => {
                 let pedidoEncontrado = false;
-                numeroWhatsApp = '5511940301182'; // Número padrão de delivery
                 for (let i = 0; i < data.values.length; i++) {
                     if (data.values[i][0] === codigo) {
                         pedidoEncontrado = true;
-                        document.getElementById('statusPedido').innerHTML = data.values[i][1];
-                        document.getElementById('dataAtualizacao').innerHTML = data.values[i][2];
-                        document.getElementById('observacoes').innerHTML = data.values[i][3];
-                        numeroWhatsApp = data.values[i][4] || numeroWhatsApp; // Obtém o número da loja ou mantém o padrão
+                        document.getElementById('statusPedido').innerText = data.values[i][1];
+                        document.getElementById('dataAtualizacao').innerText = data.values[i][2];
+                        document.getElementById('observacoes').innerText = data.values[i][3];
+                        lojaAtendente = data.values[i][4]; // Supondo que o nome da loja está na 5ª coluna
                         break;
                     }
                 }
 
                 if (!pedidoEncontrado) {
-                    alert('Pedido não encontrado. Você será redirecionado ao número de delivery.');
+                    alert('Pedido não encontrado.');
+                    document.getElementById('statusResultado').style.display = 'none';
+                    lojaAtendente = null;
+                    return;
                 }
 
                 document.getElementById('statusResultado').style.display = 'block';
-                document.getElementById('whatsappButton').style.display = 'block';
+                document.getElementById('whatsappButton').style.display = 'flex';
             })
             .catch(error => {
                 alert('Erro ao consultar status do pedido.');
@@ -158,9 +174,11 @@
     }
 
     function redirecionarWhatsApp() {
-        var mensagem = `Olá, gostaria de informações sobre minha O.S. Código: ${document.getElementById('codigoPedido').value}`;
-        var urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-        window.open(urlWhatsApp, '_blank');
+        let numero = lojaAtendente ? `+55${lojaAtendente}` : deliveryNumber;
+        let mensagem = lojaAtendente
+            ? `Olá, sou cliente da loja ${lojaAtendente}. Poderia me ajudar com meu pedido?`
+            : `Olá, estou com dúvidas sobre meu pedido.`;
+        window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, '_blank');
     }
 </script>
 
