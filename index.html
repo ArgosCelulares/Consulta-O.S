@@ -101,32 +101,26 @@
 </head>
 <body>
 
-   <div class="container">
-    <img src="https://i.ibb.co/0Z4HkZh/logo.png" alt="Logo da Empresa" class="logo">
-    <h2>Consulta de status da sua Ordem de Serviço</h2>
-    <p>Digite o código da sua O.S para consultar o status:</p>
-    <input type="text" id="codigoPedido" placeholder="Código do Pedido">
-    <button onclick="consultarStatus()">Consultar Status</button>
+    <div class="container">
+        <img src="https://i.ibb.co/0Z4HkZh/logo.png" alt="Logo da Empresa" class="logo">
+        <h2>Consulta de status da sua Ordem de Serviço</h2>
+        <p>Digite o código da sua O.S para consultar o status:</p>
+        <input type="text" id="codigoPedido" placeholder="Código do Pedido">
+        <button onclick="consultarStatus()">Consultar Status</button>
 
-    <!-- Botão de WhatsApp -->
-    <button onclick="abrirWhatsApp()" style="background-color: #25D366; margin-top: 10px;">
-        Fale conosco no WhatsApp
-    </button>
+        <div id="statusResultado" class="status" style="display:none;">
+            <h4>Status Atual do Pedido: <span id="statusPedido">Aguardando consulta...</span></h4>
+            <p><strong>Data de Atualização:</strong> <span id="dataAtualizacao">Aguardando...</span></p>
+            <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
+        </div>
 
-    <div id="statusResultado" class="status" style="display:none;">
-        <h4>Status Atual do Pedido: <span id="statusPedido">Aguardando consulta...</span></h4>
-        <p><strong>Data de Atualização:</strong> <span id="dataAtualizacao">Aguardando...</span></p>
-        <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
+        <!-- Ícone do Instagram com link -->
+        <div class="instagram-icon">
+            <a href="https://www.instagram.com/argoscelulares/" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+            </a>
+        </div>
     </div>
-
-    <!-- Ícone do Instagram com link -->
-    <div class="instagram-icon">
-        <a href="https://www.instagram.com/argoscelulares/" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
-        </a>
-    </div>
-</div>
-
 
     <footer>
         Argos Celulares - 2024 | Todos os Direitos Reservados | Desenvolvido com ❤ por <a href="https://www.instagram.com/argoscelulares/" target="_blank">Argos Celulares</a>
@@ -140,7 +134,7 @@
                 return;
             }
 
-            var url = https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE;
+            var url = `https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE`;
 
             fetch(url)
                 .then(response => response.json())
@@ -177,12 +171,6 @@
                     alert('Erro ao consultar status do pedido.');
                     console.error(error);
                 });
-        }
-
-        function abrirWhatsApp() {
-    const numeroLoja = "5511999999999"; // Substitua pelo número da sua loja no formato internacional, sem o "+".
-    const mensagem = encodeURIComponent("Olá, estou entrando em contato sobre minha Ordem de Serviço.");
-    window.open(`https://wa.me/${numeroLoja}?text=${mensagem}`, '_blank');
         }
     </script>
 
