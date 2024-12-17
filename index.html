@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de O.S</title>
-    <link rel="icon" type="image/png" href="https://i.ibb.co/Vw7mcgF/S-mbolo-Branco.png">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/Vw7mcgF/S-mbolo-Branco.png"> <!-- Favicon -->
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
+            background-color: #f4f4f4; /* Cor de fundo clara */
+            display: flex; 
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            flex-direction: column;
+            height: 100vh; /* Garante que o conteúdo seja centralizado verticalmente */
+            flex-direction: column; /* Organiza os itens verticalmente */
         }
         .container {
             width: 100%;
@@ -43,52 +43,46 @@
             width: 80%;
             max-width: 400px;
             padding: 10px;
-            background-color: #4CAF50;
+            background-color: #4CAF50; /* Verde do site */
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 10px;
         }
         button:hover {
             background-color: #45a049;
         }
         .status {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    width: 80%;
-    max-width: 400px;
-    text-align: left; /* Texto alinhado à esquerda */
-    margin: 20px auto; /* Centraliza o retângulo horizontalmente */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Elementos internos alinhados à esquerda */
-    justify-content: center; /* Mantém centralização vertical interna */
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            width: 80%;
+            max-width: 400px;
+            text-align: left; /* Alinha o texto no centro */
+            margin: 20px auto; /* Centraliza horizontalmente no container */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centraliza o conteúdo */
+            justify-content: center; /* Centraliza o conteúdo verticalmente */
         }
+        .status h4 {
+            margin-bottom: 10px;
+        }
+        .status p {
+            margin: 5px 0;
+        }
+        /* Estilo para os ícones de Instagram e WhatsApp */
         .social-icons {
             margin-top: 20px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 15px;
         }
-        .social-icons a, .social-icons button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-            background-color: #fff;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-        .social-icons a img, .social-icons button img {
-            width: 100%;
-            height: 100%;
+        .social-icons img {
+            width: 40px;
+            height: 40px;
+            margin: 0 10px;
         }
         footer {
             width: 100%;
@@ -110,71 +104,88 @@
 </head>
 <body>
 
-<div class="container">
-    <img src="https://i.ibb.co/0Z4HkZh/logo.png" alt="Logo da Empresa" class="logo">
-    <h2>Consulta de status da sua Ordem de Serviço</h2>
-    <p>Digite o código da sua O.S para consultar o status:</p>
-    <input type="text" id="codigoPedido" placeholder="Código do Pedido">
-    <button onclick="consultarStatus()">Consultar Status</button>
+    <div class="container">
+        <img src="https://i.ibb.co/0Z4HkZh/logo.png" alt="Logo da Empresa" class="logo">
+        <h2>Consulta de status da sua Ordem de Serviço</h2>
+        <p>Digite o código da sua O.S para consultar o status:</p>
+        <input type="text" id="codigoPedido" placeholder="Código do Pedido">
+        <button onclick="consultarStatus()">Consultar Status</button>
 
-    <div id="statusResultado" class="status" style="display:none;">
-        <h4>Status Atual do Pedido: <span id="statusPedido">Aguardando consulta...</span></h4>
-        <p><strong>Data de Atualização:</strong> <span id="dataAtualizacao">Aguardando...</span></p>
-        <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
+        <div id="statusResultado" class="status" style="display:none;">
+            <h4>Status Atual do Pedido: <span id="statusPedido">Aguardando consulta...</span></h4>
+            <p><strong>Data de Atualização:</strong> <span id="dataAtualizacao">Aguardando...</span></p>
+            <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
+        </div>
+
+        <!-- Ícones das redes sociais -->
+        <div class="social-icons">
+            <a href="https://www.instagram.com/argoscelulares/" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+            </a>
+            <a id="whatsappLink" href="#" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            </a>
+        </div>
     </div>
 
-    <div class="social-icons">
-        <a href="https://www.instagram.com/argoscelulares/" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
-        </a>
-        <a href="https://wa.me/+5511999999999" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-        </a>
-    </div>
-</div>
+    <footer>
+        Argos Celulares - 2024 | Todos os Direitos Reservados | Desenvolvido com ❤ por <a href="https://www.instagram.com/argoscelulares/" target="_blank">Argos Celulares</a>
+    </footer>
 
-<footer>
-    Argos Celulares - 2024 | Todos os Direitos Reservados | Desenvolvido com ❤ por <a href="https://www.instagram.com/argoscelulares/" target="_blank">Argos Celulares</a>
-</footer>
+    <script>
+        function consultarStatus() {
+            var codigo = document.getElementById('codigoPedido').value;
+            if (codigo.trim() === '') {
+                alert('Por favor, insira um código de pedido válido.');
+                return;
+            }
 
-<script>
-    function consultarStatus() {
-        var codigo = document.getElementById('codigoPedido').value;
-        if (codigo.trim() === '') {
-            alert('Por favor, insira um código de pedido válido.');
-            return;
-        }
+            var url = 'https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE';
 
-        var url = `https://sheets.googleapis.com/v4/spreadsheets/1OMJge9QEffPd1ewxrZhrECYlf4jOP_JJ9znlIfVkN1c/values/Pedidos?key=AIzaSyAmA-o4iA6yvM49Y3rJqz3N0z8fMH-OrsE`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    let pedidoEncontrado = false;
+                    var statusAtual = '';
+                    var dataAtualizacao = '';
+                    var observacoes = '';
+                    var whatsappNumero = '';
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                let pedidoEncontrado = false;
-                for (let i = 0; i < data.values.length; i++) {
-                    if (data.values[i][0] === codigo) {
-                        pedidoEncontrado = true;
-                        document.getElementById('statusPedido').innerText = data.values[i][1];
-                        document.getElementById('dataAtualizacao').innerText = data.values[i][2];
-                        document.getElementById('observacoes').innerText = data.values[i][3];
-                        break;
+                    for (let i = 0; i < data.values.length; i++) {
+                        if (data.values[i][0] === codigo) {
+                            pedidoEncontrado = true;
+                            statusAtual = data.values[i][1]; // Obtém o status do pedido
+                            dataAtualizacao = data.values[i][2]; // Obtém a data de atualização
+                            observacoes = data.values[i][3]; // Obtém as observações
+                            var nomeLoja = data.values[i][4]; // Nome da loja
+                            whatsappNumero = nomeLoja ? data.values[i][5] : data.values[i][6]; // Se não tiver nome da loja, pega o número de delivery
+                            break;
+                        }
                     }
-                }
+                    if (!pedidoEncontrado) {
+                        alert('Pedido não encontrado.');
+                        document.getElementById('statusPedido').innerHTML = 'Pedido não encontrado.';
+                        document.getElementById('dataAtualizacao').innerHTML = 'Data não disponível.';
+                        document.getElementById('observacoes').innerHTML = 'Nenhuma observação.';
+                        return;
+                    }
 
-                if (!pedidoEncontrado) {
-                    alert('Pedido não encontrado.');
-                    document.getElementById('statusResultado').style.display = 'none';
-                    return;
-                }
+                    // Exibe as informações do status, data e observações
+                    document.getElementById('statusPedido').innerHTML = statusAtual;
+                    document.getElementById('dataAtualizacao').innerHTML = dataAtualizacao;
+                    document.getElementById('observacoes').innerHTML = observacoes;
 
-                document.getElementById('statusResultado').style.display = 'block';
-            })
-            .catch(error => {
-                alert('Erro ao consultar status do pedido.');
-                console.error(error);
-            });
-    }
-</script>
+                    // Configura o link do WhatsApp
+                    document.getElementById('whatsappLink').href = 'https://wa.me/' + whatsappNumero;
+
+                    document.getElementById('statusResultado').style.display = 'block';
+                })
+                .catch(error => {
+                    alert('Erro ao consultar status do pedido.');
+                    console.error(error);
+                });
+        }
+    </script>
 
 </body>
 </html>
