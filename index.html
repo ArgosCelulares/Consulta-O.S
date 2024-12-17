@@ -135,10 +135,14 @@
     </footer>
 
     <script>
-       function consultarStatus() {
+      function consultarStatus() {
     var codigo = document.getElementById('codigoPedido').value;
+    
+    // Se o código estiver em branco, redireciona para o WhatsApp do delivery
     if (codigo.trim() === '') {
-        alert('Por favor, insira um código de pedido válido.');
+        alert('Por favor, insira um código de pedido válido ou entre em contato com o delivery.');
+        document.getElementById('whatsappLink').href = "https://wa.me/5511940301182"; // Número do delivery configurado
+        document.getElementById('whatsappLink').click(); // Simula o clique no link do WhatsApp
         return;
     }
 
