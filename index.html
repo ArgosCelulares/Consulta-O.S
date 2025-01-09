@@ -114,7 +114,7 @@
         <button onclick="consultarStatus()">Consultar Status</button>
 
         <div id="statusResultado" class="status" style="display:none;">
-            <h4>Status Atual do Pedido: <span id="statusPedido">Aguardando consulta...</span></h4>
+            <h4>Status Atual da O.S: <span id="statusPedido">Aguardando consulta...</span></h4>
             <p><strong>Data de Atualização:</strong> <span id="dataAtualizacao">Aguardando...</span></p>
             <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
         </div>
@@ -138,7 +138,7 @@
         function consultarStatus() {
             var codigo = document.getElementById('codigoPedido').value;
             if (codigo.trim() === '') {
-                alert('Por favor, insira um código de pedido válido.');
+                alert('Por favor, insira um código de O.S válido.');
                 return;
             }
 
@@ -164,8 +164,8 @@
                         }
                     }
 
-                    if (!pedidoEncontrado) {
-                        alert('Pedido não encontrado.');
+                    if (!OSEncontrada) {
+                        alert('O.S não encontrada.');
                         document.getElementById('statusPedido').innerHTML = 'Pedido não encontrado.';
                         document.getElementById('dataAtualizacao').innerHTML = 'Data não disponível.';
                         document.getElementById('observacoes').innerHTML = 'Nenhuma observação.';
@@ -189,7 +189,7 @@
                     document.getElementById('statusResultado').style.display = 'block';
                 })
                 .catch(error => {
-                    alert('Erro ao consultar status do pedido.');
+                    alert('Erro ao consultar status da O.S');
                     console.error(error);
                 });
         }
