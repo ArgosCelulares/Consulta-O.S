@@ -7,26 +7,25 @@
     <link rel="icon" type="image/png" href="https://i.ibb.co/Vw7mcgF/S-mbolo-Branco.png"> <!-- Favicon -->
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            padding-bottom: 50px; /* Adicione espaço suficiente para o rodapé */
-            background-color: #f4f4f4; /* Cor de fundo clara */
-            display: flex; 
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* Garante que o conteúdo seja centralizado verticalmente */
-            flex-direction: column; /* Organiza os itens verticalmente */
-            box-sizing: border-box; /* Inclui o padding no cálculo de altura */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column; /* Organiza o conteúdo em uma coluna */
+    min-height: 100vh; /* Garante que o corpo ocupe a altura total da viewport */
+    box-sizing: border-box; /* Inclui o padding no cálculo de altura */
         }
         .container {
-            width: 100%;
-            max-width: 500px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+    flex: 1; /* Faz o container expandir para preencher o espaço disponível */
+    width: 100%;
+    max-width: 500px;
+    margin: auto; /* Centraliza horizontalmente */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
         }
         .logo {
             max-width: 200px;
@@ -89,16 +88,14 @@
             cursor: pointer;
         }
         footer {
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            margin-top: 20px;
-            background-color: #333;
-            color: #fff;
-            font-size: 14px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    position: relative; /* Não sobrepõe o conteúdo */
+    bottom: 0;
         }
         footer a {
             color: #fff;
