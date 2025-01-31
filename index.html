@@ -109,11 +109,11 @@
         <img src="https://i.ibb.co/0Z4HkZh/logo.png" alt="Logo da Empresa" class="logo">
         <h2>Consulta de status da sua Ordem de Serviço</h2>
         <p>Digite o código da sua O.S para consultar o status:</p>
-        <input type="text" id="codigoO.S" placeholder="Código da O.S">
+        <input type="text" id="codigoPedido" placeholder="Código do Pedido">
         <button onclick="consultarStatus()">Consultar Status</button>
 
         <div id="statusResultado" class="status" style="display:none;">
-            <h4>Status Atual da O.S: <span id="statusPedido">Aguardando consulta...</span></h4>
+            <h4>Status Atual do Pedido: <span id="statusPedido">Aguardando consulta...</span></h4>
             <p><strong>Data de Atualização:</strong> <span id="dataAtualizacao">Aguardando...</span></p>
             <p><strong>Observações:</strong> <span id="observacoes">Aguardando...</span></p>
         </div>
